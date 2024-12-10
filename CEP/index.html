@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Buscador de CEP e Ruas</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- Container das abas -->
+    <div class="tabs">
+        <!-- Botões para alternar entre as abas -->
+        <button class="tablinks" onclick="openTab(event, 'cepTab')">Buscar por CEP</button>
+        <button class="tablinks" onclick="openTab(event, 'streetTab')">Buscar por Rua</button>
+    </div>
+
+    <!-- Formulário de Busca por CEP -->
+    <div id="cepTab" class="tabcontent">
+        <h2>Buscar informações por CEP</h2>
+        <form id="cep-form">
+            <label>CEP:
+                <input name="cep" type="text" id="cep" size="10" maxlength="9" />
+            </label>
+            <br />
+            <button type="button" onclick="searchCep()">Buscar CEP</button>
+            <br />
+            <label>Rua:
+                <input name="rua" type="text" id="rua" size="60" disabled />
+            </label>
+            <br />
+            <label>Bairro:
+                <input name="bairro" type="text" id="bairro" size="40" disabled />
+            </label>
+            <br />
+            <label>Cidade:
+                <input name="cidade" type="text" id="cidade" size="40" disabled />
+            </label>
+            <br />
+            <label>Estado:
+                <input name="uf" type="text" id="uf" size="2" disabled />
+            </label>
+            <br />
+            <label>IBGE:
+                <input name="ibge" type="text" id="ibge" size="8" disabled />
+            </label>
+            <br />
+        </form>
+    </div>
+
+    <!-- Formulário de Busca por Nome de Rua -->
+    <div id="streetTab" class="tabcontent">
+        <h2>Buscar ruas em Cascavel</h2>
+        <form id="street-form">
+            <label>Nome da Rua:
+                <input type="text" id="street-name" placeholder="Digite o nome da rua..." />
+            </label>
+            <br />
+            <button type="button" onclick="searchStreet()">Buscar Ruas</button>
+            <div id="results"></div>
+        </form>
+    </div>
+
+    <!-- Script -->
+    <script>
+        // Função para abrir a aba selecionada
+        function openTab(evt, tabName) {
+            // Esconde todas as abas
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Remove a classe "active" de todos os botões
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Mostra a aba selecionada e adiciona a classe "active" ao botão
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Função para buscar informações do CEP
+        function searchCep() {
+            const cep = document.getElementById('cep').value.replace(/\D/g, '');
+
+            if (cep.length === 8) {
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('rua').value = data.logradouro || '';
+                            document.getElementById('bairro').value = data.bairro || '';
+                            document.getElementById('cidade').value = data.localidade || '';
+                            document.getElementById('uf').value = data.uf || '';
+                            document.getElementById('ibge').value = data.ibge || '';
+                        } else {
+                            alert('CEP não encontrado.');
+                        }
+                    })
+                    .catch(() => alert('Erro ao buscar o CEP.'));
+            } else {
+                alert('CEP inválido. Digite um CEP com 8 dígitos.');
+            }
+        }
+
+        // Função para buscar ruas no arquivo JSON
+        function searchStreet() {
+            const streetName = document.getElementById('street-name').value.toLowerCase();
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            if (streetName) {
+                fetch('cascavel.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const filtered = data.filter(entry =>
+                            entry.LOGRADOURO.toLowerCase().includes(streetName)
+                        );
+
+                        if (filtered.length > 0) {
+                            resultsDiv.innerHTML = '<h3>Resultados:</h3>';
+                            filtered.forEach(item => {
+                                resultsDiv.innerHTML += ` 
+                                    <p>
+                                        <strong>Logradouro:</strong> ${item.LOGRADOURO}<br>
+                                        <strong>Bairro:</strong> ${item.BAIRRO}<br>
+                                        <strong>CEP:</strong> ${item.CEP}
+                                    </p>
+                                `;
+                            });
+                        } else {
+                            resultsDiv.innerHTML = '<p>Nenhuma rua encontrada.</p>';
+                        }
+                    })
+                    .catch(() => {
+                        resultsDiv.innerHTML = '<p>Erro ao carregar dados das ruas.</p>';
+                    });
+            } else {
+                resultsDiv.innerHTML = '<p>Digite um nome de rua para buscar.</p>';
+            }
+        }
+
+        // Mostra a aba "Buscar por CEP" por padrão
+        document.getElementsByClassName("tablinks")[0].click();
+    </script>
+</body>
+</html>

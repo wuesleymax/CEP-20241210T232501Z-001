@@ -1,0 +1,117 @@
+/* Definições de cursor */
+button, input, select, textarea {
+    cursor: pointer; /* Para botões, mantenha pointer */
+}
+
+/* Garante o cursor padrão para links */
+a {
+    cursor: pointer; /* Normalmente, links têm 'pointer' */
+}
+
+/* Corpo da página */
+body {
+    font-family: Arial, sans-serif;
+    background: url('istockphoto-1442849073-612x612.jpg') no-repeat center center fixed; /* Imagem de fundo */
+    background-size: cover; /* Faz a imagem cobrir toda a tela */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #388E3C; /* Cor do texto geral */
+}
+
+/* Estilo das abas */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tablinks {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 200px;
+    text-align: center;
+}
+
+.tablinks:hover {
+    background-color: #45a049;
+}
+
+.tablinks.active {
+    background-color: #388E3C;
+}
+
+/* Conteúdo das abas */
+.tabcontent {
+    display: none;
+    background-color: rgba(255, 255, 255, 0.8); /* Fundo branco semitransparente */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 420px;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* Estilo do formulário */
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #388E3C; /* Cor verde escuro */
+}
+
+/* Campos de texto */
+form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #4CAF50; /* Borda verde */
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #f5f5f5;
+    color: #388E3C; /* Cor do texto verde escuro */
+}
+
+form input[type="text"]:focus {
+    border-color: #388E3C; /* Cor de borda mais escura ao focar */
+    outline: none;
+    box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+}
+
+form input[type="text"][disabled] {
+    background-color: #e0f2f1; /* Fundo verde claro para campos desabilitados */
+}
+
+/* Botões */
+button {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #4CAF50, #8BC34A); }
+
+    button {
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #4CAF50, #8BC34A); /* Gradiente */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    button:hover {
+        background: linear-gradient(135deg, #388E3C, #5A9E2E); /* Cor do botão quando o cursor passar */
+    }
+    
+    
+    
+    
+    /* Gradiente
